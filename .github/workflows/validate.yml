@@ -1,0 +1,61 @@
+---
+
+
+
+#####################
+## GitHub Workflow ##
+#####################
+
+name: Validation
+
+permissions:
+  contents: write
+
+on:  # yamllint disable-line rule:truthy
+
+  schedule:
+    - cron: '0 2 * * *'
+
+  pull_request:
+
+  push:
+    branches:
+      - main
+
+jobs:
+
+
+
+  ################
+  ## Validation ##
+  ################
+  validate:
+    name: Validation
+    runs-on: ubuntu-latest
+    env:
+      PYTHON: python3
+    steps:
+
+
+      # Standard project construction
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with: {python-version: '3.12'}
+
+      # Standard project construction
+      - name: Install PyYAML from PyPi
+        run: pip install pyyaml
+
+      # Standard project construction
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+
+
+      # Standard project construction
+      - name: Build environment
+        run: make -s venv-create
+
+
+      # Validate the Ansible project
+      - name: Run all validators
+        run: make -s check
