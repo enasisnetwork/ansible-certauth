@@ -1,0 +1,33 @@
+---
+
+
+
+namespace: enasisnetwork
+name: certauth
+description: Enasis Network Ansible Certificates Collection
+version: 0.1.0
+readme: README.md
+authors:
+  - Robert Harris (https://github.com/enrh)
+  - Enasis Network (https://github.com/enasisnetwork)
+license_file: LICENSE
+repository: https://github.com/enasisnetwork/ansible-certauth
+tags: ['certificates']
+
+
+
+dependencies:
+  enasisnetwork.utility: '*'
+
+
+
+manifest:
+  omit_default_directives: true
+  directives:
+    - include LICENSE
+    - include README.md
+    - include requirements.txt
+    - recursive-include meta *
+    - recursive-include playbooks *
+    - recursive-include plugins *
+    - recursive-include roles *

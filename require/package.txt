@@ -1,0 +1,19 @@
+-r install.txt
+
+types-PyYAML
+
+pytest
+
+distlib
+molecule
+molecule-plugins[docker]
+testinfra
+
+pytest-ansible
+pytest-clarity
+pytest-cov
+pytest-mypy
+pytest-randomly
+pytest-sphinx
+pytest-testinfra
+pytest-xdist
