@@ -1,0 +1,91 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Construct the certificate from request
+
+  ansible.builtin.command: >-
+    {%- if ansible_check_mode -%}
+    /bin/true
+    {%- else -%}
+    {{-   item.command -}}
+    {%- endif -%}
+
+  args:
+    creates: '{{ item.creates }}'
+    chdir: '{{ _sslmy_certfiles }}'
+
+  environment:
+    CAPASSWORD: '{{ _sslmy_capass }}'
+
+  vars:
+    subject: >-
+      /CN={{ _sslmy_common -}}
+      /O={{ sslca_defaults.company -}}
+      /OU={{ sslca_defaults.department -}}
+      /C={{ sslca_defaults.country -}}
+      {%- if _sslmy_kind == 'person'
+           and _sslmy_alias | length -%}
+      /emailAddress={{ _sslmy_alias[0] }}
+      {%- endif -%}
+
+  loop:
+    - creates: '{{ _sslmy_mykey }}'
+      command: >-
+        {{ sslca_openssl }} req
+        -new
+        -config {{ _sslmy_mycnf }}
+        -out {{ _sslmy_mycsr }}
+        -keyout {{ _sslmy_mykey }}
+        -passout pass:''
+        -subj "{{ subject }}"
+    - creates: '{{ _sslmy_mycert }}'
+      command: >-
+        {{ sslca_openssl }} ca
+        -batch
+        -config {{ _sslmy_cacnf }}
+        -in {{ _sslmy_mycsr }}
+        -out {{ _sslmy_mycert }}
+        -extensions sslca_req
+        -passin env:CAPASSWORD
+
+  loop_control:
+    label: '{{ item.creates | basename }}'
+
+  delegate_to: localhost
+  check_mode: false
+
+  tags: always
+
+
+
+
+
+
+- name: Construct chain for the certificate
+
+  ansible.builtin.shell: >-
+    {%- if ansible_check_mode -%}
+    /bin/true
+    {%- else -%}
+    {%-   set a = _sslmy_mycert -%}
+    {%-   set b = _sslmy_cachain -%}
+    {%-   set c = _sslmy_mychain -%}
+    cat {{ a }} {{ b }} > {{ c }}
+    {%- endif -%}
+
+  args:
+    creates: "{{ _sslmy_mychain }}"
+    chdir: '{{ _sslmy_certfiles }}'
+
+  delegate_to: localhost
+  check_mode: false
+
+  tags: always

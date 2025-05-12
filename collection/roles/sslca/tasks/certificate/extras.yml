@@ -1,0 +1,57 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Construct the certificate from request
+  # noqa: command-instead-of-shell
+
+  ansible.builtin.shell: >-
+    {%- if ansible_check_mode -%}
+    /bin/true
+    {%- else -%}
+    {{-   item.command -}}
+    {%- endif -%}
+
+  args:
+    creates: '{{ item.creates }}'
+    chdir: '{{ _sslmy_certfiles }}'
+
+  loop:
+
+    - creates: '{{ _sslmy_thumb }}'
+      command: >-
+        {% set thumb = _sslmy_thumb %}
+        {{ sslca_openssl }} x509
+        -in {{ _sslmy_mycert }}
+        -fingerprint
+        -noout
+        | awk -F'=' '{print $2}'
+        | sed 's/://g' > {{ thumb }}
+
+    - creates: '{{ _sslmy_rsakey }}'
+      command: >-
+        {{ sslca_openssl }} rsa
+        -in {{ _sslmy_mykey }}
+        -passin pass:''
+        -out {{ _sslmy_rsakey }}
+    - creates: '{{ _sslmy_rsapub }}'
+      command: >-
+        {{ sslca_openssl }} rsa
+        -in {{ _sslmy_rsakey }}
+        -pubout
+        -out {{ _sslmy_rsapub }}
+
+  loop_control:
+    label: '{{ item.creates | basename }}'
+
+  delegate_to: localhost
+  check_mode: false
+
+  tags: always

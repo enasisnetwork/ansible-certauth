@@ -1,0 +1,35 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Populate authority with initial values
+
+  ansible.builtin.copy:
+    dest: '{{ item.dest }}'
+    content: '{{ item.content }}'
+    mode: '0400'
+    force: false
+
+  loop:
+    - dest: '{{ _sslca_rootfiles }}/index.txt'
+      content: ''
+    - dest: '{{ _sslca_rootfiles }}/index.txt.attr'
+      content: ''
+    - dest: '{{ _sslca_rootfiles }}/serial'
+      content: '01'
+    - dest: '{{ _sslca_rootfiles }}/crlnumber'
+      content: '01'
+
+  loop_control:
+    label: '{{ item.dest | basename(1) }}'
+
+  delegate_to: localhost
+
+  tags: always
