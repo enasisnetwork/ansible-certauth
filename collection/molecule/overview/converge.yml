@@ -2,6 +2,21 @@
 
 
 
-- name: Import tasks and roles from playbook
-  import_playbook: enasisnetwork.certauth.sslca
-  tags: always
+- name: Include roles for playbook operations
+  hosts: all
+  tasks:
+
+    - name: Include downstream tasks within roles
+      ansible.builtin.include_role:
+        name: enasisnetwork.certauth.sslca
+        tasks_from: params
+
+    - name: Include downstream tasks within roles
+      ansible.builtin.include_role:
+        name: enasisnetwork.certauth.sslca
+        tasks_from: validate
+
+    - name: Include downstream tasks within roles
+      ansible.builtin.include_role:
+        name: enasisnetwork.certauth.sslca
+        tasks_from: overview

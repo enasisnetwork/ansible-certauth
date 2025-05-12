@@ -6,6 +6,7 @@ is permitted, for more information consult the project license file.
 """
 
 
+
 from os import environ
 from pathlib import Path
 from sys import executable
@@ -33,14 +34,14 @@ def test_default(
 
     proc = molecule_scenario.test()
 
-    assert proc.returncode in [0, 1]
+    assert proc.returncode == 1
 
 
     stdout, stderr = (
         capfd.readouterr())
 
     expect = (
-        'Could not match supplied'
-        ' host pattern')
+        'No key/value '
+        'pairs provided')
 
     assert expect in stdout
