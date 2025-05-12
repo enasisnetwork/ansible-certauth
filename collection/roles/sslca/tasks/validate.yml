@@ -1,0 +1,35 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Collect the current version of OpenSSL
+
+  ansible.builtin.command: >-
+    {{ sslca_openssl }} version
+
+  delegate_to: localhost
+  register: _openssl_version
+  check_mode: false
+  changed_when: false
+
+  tags: always
+
+
+
+- name: Assert the minimum version for OpenSSL
+
+  ansible.builtin.assert:
+    that: >-
+      {%- set output = _openssl_version.stdout -%}
+      {%- set version = output.split(' ')[1] -%}
+      {%- set version = version.split('.')[:2] -%}
+      {{- version | join('.') | float >= 3.1 -}}
+
+  tags: always

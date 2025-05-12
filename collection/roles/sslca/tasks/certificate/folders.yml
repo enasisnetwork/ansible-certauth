@@ -1,0 +1,30 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Create directories for related install
+
+  ansible.builtin.file:
+    path: '{{ item.path }}'
+    mode: '0700'
+    state: directory
+
+  loop:
+    - path: '{{ _sslmy_certkeys }}'
+    - path: '{{ _sslmy_certfiles }}'
+    - path: '{{ _sslmy_certfiles }}/certs'
+    - path: '{{ _sslmy_certfiles }}/csr'
+
+  loop_control:
+    label: '{{ item.path | basename(2) }}'
+
+  delegate_to: localhost
+
+  tags: always

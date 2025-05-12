@@ -1,0 +1,134 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _sslca_rootkeys: >-
+      {{ sslca_persist.rootkeys }}/
+      {{- _authority.name }}
+    _sslca_rootfiles: >-
+      {{ sslca_persist.rootfiles }}/
+      {{- _authority.name }}
+
+    _sslca_certkeys: >-
+      {{ sslca_persist.certkeys }}/
+      {{- _authority.name }}
+    _sslca_certfiles: >-
+      {{ sslca_persist.certfiles }}/
+      {{- _authority.name }}
+
+    _sslca_name: >-
+      {{ _authority.name }}
+    _sslca_password: >-
+      {{ _authority.password }}
+    _sslca_parent: >-
+      {{ _authority.parent }}
+    _sslca_expire: >-
+      {{ _authority.expire }}
+
+  tags: always
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _sslca_mycnf: >-
+      {{ _sslca_rootfiles }}/parent.cnf
+    _sslca_mykey: >-
+      {{ _sslca_rootkeys }}/
+      {{- _sslca_name }}.key.pem
+    _sslca_mycsr: >-
+      {{ _sslca_rootfiles }}/certs/
+      {{- _sslca_name }}.csr.pem
+    _sslca_mycert: >-
+      {{ _sslca_rootfiles }}/certs/
+      {{- _sslca_name }}.cert.pem
+    _sslca_mychain: >-
+      {{ _sslca_rootfiles }}/certs/
+      {{- _sslca_name }}.chain.pem
+    _sslca_mycrl: >-
+      {{ _sslca_rootfiles }}/crl/
+      {{- _sslca_name }}.crl.pem
+    _sslca_expire: >-
+      {{ (_sslca_expire | Time)
+         .stamp('%Y%m%d%H%M%SZ') }}
+
+    _sslca_mypass: '{{ _sslca_password }}'
+
+  tags: always
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _sslca_cacnf: >-
+      {{ sslca_persist.rootfiles }}/
+      {{- _sslca_parent }}/parent.cnf
+    _sslca_capem: >-
+      {{ sslca_persist.rootfiles }}/
+      {{- _sslca_parent }}/certs/
+      {{- _sslca_parent }}.cert.pem
+
+    _sslca_capass: >-
+      {%- set parent = _sslca_parent -%}
+      {%- for item in sslca_authority
+           if item.name == parent -%}
+      {{-   item.password -}}
+      {%- endfor -%}
+
+  when: _sslca_parent
+
+  tags: always
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    authority/folders.yml
+
+  tags: authority-build
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    authority/config.yml
+
+  tags: authority-build
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    authority/initial.yml
+
+  tags: authority-build
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    authority/build.yml
+
+  tags: authority-build

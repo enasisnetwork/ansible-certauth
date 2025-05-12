@@ -1,0 +1,38 @@
+---
+
+
+
+dependency:
+  name: galaxy
+  options:
+    requirements-file: require.yml
+
+driver:
+  name: docker
+
+platforms:
+  - name: enaspki1
+    image: almalinux:9
+    pre_build_image: true
+    privileged: true
+
+provisioner:
+  name: ansible
+  options:
+    diff: true
+    v: true
+  config_options:
+    tags:
+      run: overview
+    ssh_connection:
+      pipelining: true
+  playbooks:
+    converge: converge.yml
+
+verifier:
+  name: testinfra
+  directory: tests
+  options:
+    p: 'no:pytest-ansible'
+    c: '.'
+    v: 2

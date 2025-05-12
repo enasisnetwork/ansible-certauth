@@ -1,0 +1,7 @@
+---
+
+
+
+- name: Import tasks and roles from playbook
+  import_playbook: enasisnetwork.certauth.sslca
+  tags: always

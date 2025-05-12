@@ -1,0 +1,102 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # tags are present
+        'all' not in ansible_run_tags
+
+      - >-  # only specific hosts
+        'enasisnetwork_sslca' in groups
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    params.yml
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    validate.yml
+
+  tags: always
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    authority.yml
+
+  loop: '{{ sslca_authority or [] }}'
+
+  loop_control:
+    label: '{{ _authority.name }}'
+    loop_var: _authority
+
+  when: sslca_authority | default
+
+  tags: authority-build
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    certificate.yml
+
+  vars:
+    _authority: >-
+      {%- set cert = _certificate -%}
+      {%- set parent = cert.parent -%}
+      {%- for item in sslca_authority
+           if item.name == parent -%}
+      {{-   item -}}
+      {%- endfor -%}
+
+  loop: '{{ sslca_certificate or [] }}'
+
+  loop_control:
+    label: '{{ _certificate.name }}'
+    loop_var: _certificate
+
+  when: sslca_certificate | default
+
+  tags: certificate-build
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    overview.yml
+
+  tags: overview
