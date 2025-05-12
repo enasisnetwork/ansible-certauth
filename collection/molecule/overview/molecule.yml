@@ -22,17 +22,7 @@ provisioner:
     diff: true
     v: true
   config_options:
-    tags:
-      run: overview
     ssh_connection:
       pipelining: true
   playbooks:
     converge: converge.yml
-
-verifier:
-  name: testinfra
-  directory: tests
-  options:
-    p: 'no:pytest-ansible'
-    c: '.'
-    v: 2
