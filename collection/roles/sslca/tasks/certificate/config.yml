@@ -1,0 +1,29 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Template authority configuration file
+
+  ansible.builtin.template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0644'
+
+  loop:
+
+    - src: child.j2
+      dest: '{{ _sslmy_mycnf }}'
+
+  loop_control:
+    label: '{{ item.dest | basename(2) }}'
+
+  delegate_to: localhost
+
+  tags: always

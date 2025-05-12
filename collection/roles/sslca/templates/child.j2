@@ -1,0 +1,56 @@
+{% set aliases = [] %}
+{% if _sslmy_kind != 'person' %}
+{%   do aliases.append(_sslmy_common) %}
+{% endif %}
+{% if _sslmy_alias %}
+{%   do aliases.extend(_sslmy_alias) %}
+{% endif %}
+{% set aliases = aliases | dedup_list %}
+[req]
+default_bits = 2048
+encrypt_key = no
+default_md = sha256
+string_mask = utf8only
+prompt = yes
+distinguished_name = sslmy_dn
+req_extensions = sslmy_ext
+
+[sslmy_dn]
+countryName = Country
+countryName_default = {{ sslca_defaults.country }}
+organizationName = Organization
+organizationName_default = {{ sslca_defaults.company }}
+organizationalUnitName = Organization Unit
+organizationalUnitName_default = {{ sslca_defaults.department }}
+commonName = Common Name
+commonName_default = {{ _sslmy_common }}
+commonName_max = 254
+{% if _sslmy_kind == 'person'
+    and _sslmy_alias | length %}
+emailAddress = Email Address
+emailAddress_default = {{ _sslmy_alias[0] }}
+emailAddress_max = 254
+{% endif %}
+
+[sslmy_ext]
+keyUsage = critical,digitalSignature,keyEncipherment
+{% if _sslmy_kind == 'server' %}
+extendedKeyUsage = serverAuth,clientAuth
+{% elif _sslmy_kind == 'client' %}
+extendedKeyUsage = clientAuth
+{% elif _sslmy_kind == 'person' %}
+extendedKeyUsage = clientAuth,emailProtection
+{% endif %}
+subjectAltName = @sslmy_alt_names
+subjectKeyIdentifier = hash
+
+[sslmy_alt_names]
+{%   for san in aliases %}
+{%     if '@' in san %}
+email.{{ loop.index }} = {{ san }}
+{%     elif san | isvalid_ip %}
+IP.{{ loop.index }} = {{ san }}
+{%     else %}
+DNS.{{ loop.index }} = {{ san }}
+{%     endif %}
+{%   endfor %}

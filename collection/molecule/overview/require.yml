@@ -1,0 +1,9 @@
+---
+
+
+
+collections:
+
+  - name: enasisnetwork.certauth
+    src: collection
+    type: file

@@ -1,0 +1,23 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+- name: Include roles for playbook operations
+  hosts: enasisnetwork_sslca
+
+  serial: >-
+    {{ lookup("env", "ansible_serial") == "yes" }}
+
+  gather_facts: >-
+    {{ lookup("env", "ansible_gather") == "yes" }}
+
+  strategy: linear
+
+  roles:
+    - role: enasisnetwork.certauth.sslca

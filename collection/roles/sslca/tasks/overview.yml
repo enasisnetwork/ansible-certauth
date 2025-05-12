@@ -1,0 +1,25 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Information about the inventory hosts
+
+  enasisnetwork.utility.overview:
+    input: >-
+      {%- set values = {} -%}
+      {%- for key, value in vars.items() -%}
+      {%-   if key.startswith('sslca_')
+             or key.startswith('_sslca_') -%}
+      {%-     do values.update({key: value}) -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{- values | enasisnetwork.utility.sort_dict -}}
+
+  tags: always

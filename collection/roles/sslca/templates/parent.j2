@@ -1,0 +1,80 @@
+
+[ca]
+default_ca = sslca_CA_settings
+
+[sslca_CA_settings]
+unique_subject = no
+dir = {{ _sslca_rootfiles }}
+certs = $dir/certs
+new_certs_dir = $dir/newcerts
+crl_dir = $dir/crl
+database = $dir/index.txt
+serial = $dir/serial
+RANDFILE = {{ _sslca_rootkeys }}/.rand
+private_key = {{ _sslca_rootkeys }}/{{ _sslca_name }}.key.pem
+certificate = $dir/certs/{{ _sslca_name }}.cert.pem
+crlnumber = $dir/crlnumber
+crl = $dir/crl/{{ _sslca_name }}.crl.pem
+crl_extensions = sslca_crl_ext
+default_crl_days = 30
+default_days = {{ ((_sslca_expire | Time).since // 86400) | int }}
+default_md = sha256
+email_in_dn = no
+policy = {{ "sslca_policy_root" if _sslca_parent is none else "sslca_policy_intermediate" }}
+copy_extensions = {{ "none" if _sslca_parent is none else "copy" }}
+
+[sslca_policy_root]
+countryName = match
+organizationName = match
+organizationalUnitName = optional
+commonName = supplied
+emailAddress = optional
+
+[sslca_policy_intermediate]
+countryName = optional
+organizationName = optional
+organizationalUnitName = optional
+commonName = supplied
+emailAddress = optional
+
+[req]
+default_bits = 4096
+default_md = sha256
+string_mask = utf8only
+prompt = no
+distinguished_name = sslca_dn
+req_extensions = sslca_req
+x509_extensions = {{ "sslca_rootca" if _sslca_parent is none else "sslca_intermediate" }}
+
+[sslca_dn]
+countryName = {{ sslca_defaults.country }}
+organizationName = {{ sslca_defaults.company }}
+organizationalUnitName = {{ sslca_defaults.department }}
+commonName = {{ _sslca_name }} CA
+
+[sslca_rootca]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical,CA:true,pathlen:1
+keyUsage = critical,keyCertSign,cRLSign
+
+[sslca_intermediate]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical,CA:true,pathlen:0
+keyUsage = critical,keyCertSign,cRLSign
+{% if _sslca_parent | default %}
+extendedKeyUsage = serverAuth,clientAuth,emailProtection
+{% endif %}
+{% if sslca_defaults.website | default %}
+crlDistributionPoints = URI:{{ sslca_defaults.website }}/crl/{{ _sslca_name }}.crl.pem
+authorityInfoAccess = OCSP;URI:{{ sslca_defaults.website }}/ocsp
+{% endif %}
+
+[sslca_req]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+
+[sslca_crl_ext]
+authorityKeyIdentifier = keyid:always

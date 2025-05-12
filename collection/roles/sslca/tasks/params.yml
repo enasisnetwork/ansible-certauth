@@ -1,0 +1,74 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+  # Important to force parsing with Jinja2
+
+  ansible.builtin.set_fact:
+
+    sslca_authority: >-
+      {{ sslca_authority | default(omit) }}
+    sslca_certificate: >-
+      {{ sslca_certificate | default(omit) }}
+    sslca_persist: >-
+      {{ sslca_persist | default(omit) }}
+    sslca_defaults: >-
+      {{ sslca_defaults | default(omit) }}
+    sslca_openssl: >-
+      {{ sslca_openssl | default(omit) }}
+
+  tags: always
+
+
+
+
+
+
+- name: Validate role variables using Pydantic
+
+  enasisnetwork.certauth.sslca.params:
+
+    authority: >-
+      {{ sslca_authority | default(omit) }}
+    certificate: >-
+      {{ sslca_certificate | default(omit) }}
+    persist: >-
+      {{ sslca_persist | default(omit) }}
+    defaults: >-
+      {{ sslca_defaults | default(omit) }}
+    openssl: >-
+      {{ sslca_openssl | default(omit) }}
+
+  register: pbvalidate
+
+  tags: always
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    sslca_authority: >-
+      {{ pbvalidate.params.authority }}
+    sslca_certificate: >-
+      {{ pbvalidate.params.certificate }}
+    sslca_persist: >-
+      {{ pbvalidate.params.persist }}
+    sslca_defaults: >-
+      {{ pbvalidate.params.defaults }}
+    sslca_openssl: >-
+      {{ pbvalidate.params.openssl }}
+
+  tags: always

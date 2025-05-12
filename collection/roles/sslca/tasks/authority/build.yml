@@ -1,0 +1,151 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Construct the initial root authorities
+
+  ansible.builtin.command: >-
+    {%- if ansible_check_mode -%}
+    /bin/true
+    {%- else -%}
+    {{-   item.command -}}
+    {%- endif -%}
+
+  args:
+    creates: '{{ item.creates }}'
+    chdir: '{{ _sslca_rootfiles }}'
+
+  environment:
+    MYPASSWORD: '{{ _sslca_mypass }}'
+
+  loop:
+    - creates: '{{ _sslca_mykey }}'
+      command: >-
+        {{ sslca_openssl }} req
+        -new
+        -config {{ _sslca_mycnf }}
+        -out {{ _sslca_mycsr }}
+        -keyout {{ _sslca_mykey }}
+        -passout env:MYPASSWORD
+    - creates: '{{ _sslca_mycert }}'
+      command: >-
+        {{ sslca_openssl }} ca
+        -batch
+        -selfsign
+        -config {{ _sslca_mycnf }}
+        -in {{ _sslca_mycsr }}
+        -out {{ _sslca_mycert }}
+        -extensions sslca_rootca
+        -enddate {{ _sslca_expire }}
+        -passin env:MYPASSWORD
+    - creates: '{{ _sslca_mycrl }}'
+      command: >-
+        {{ sslca_openssl }} ca
+        -gencrl
+        -config {{ _sslca_mycnf }}
+        -out {{ _sslca_mycrl }}
+        -passin env:MYPASSWORD
+
+  loop_control:
+    label: '{{ item.creates | basename }}'
+
+  delegate_to: localhost
+  check_mode: false
+
+  when: not _sslca_parent
+
+  tags: always
+
+
+
+
+
+
+- name: Construct the intermediate authorities
+
+  ansible.builtin.command: >-
+    {%- if ansible_check_mode -%}
+    /bin/true
+    {%- else -%}
+    {{-   item.command -}}
+    {%- endif -%}
+
+  args:
+    creates: '{{ item.creates }}'
+    chdir: '{{ _sslca_rootfiles }}'
+
+  environment:
+    CAPASSWORD: '{{ _sslca_mypass }}'
+    MYPASSWORD: '{{ _sslca_capass }}'
+
+  loop:
+    - creates: '{{ _sslca_mykey }}'
+      command: >-
+        {{ sslca_openssl }} req
+        -new
+        -config {{ _sslca_mycnf }}
+        -out {{ _sslca_mycsr }}
+        -keyout {{ _sslca_mykey }}
+        -passout env:MYPASSWORD
+    - creates: '{{ _sslca_mycert }}'
+      command: >-
+        {{ sslca_openssl }} ca
+        -batch
+        -config {{ _sslca_cacnf }}
+        -in {{ _sslca_mycsr }}
+        -out {{ _sslca_mycert }}
+        -extensions sslca_intermediate
+        -enddate {{ _sslca_expire }}
+        -passin env:CAPASSWORD
+    - creates: '{{ _sslca_mycrl }}'
+      command: >-
+        {{ sslca_openssl }} ca
+        -gencrl
+        -config {{ _sslca_mycnf }}
+        -out {{ _sslca_mycrl }}
+        -passin env:MYPASSWORD
+
+  loop_control:
+    label: '{{ item.creates | basename }}'
+
+  delegate_to: localhost
+  check_mode: false
+
+  when: _sslca_parent
+
+  tags: always
+
+
+
+
+
+
+- name: Construct chains for the intermediates
+
+  ansible.builtin.shell: >-
+    {%- if ansible_check_mode -%}
+    /bin/true
+    {%- else -%}
+    {%-   set a = _sslca_mycert -%}
+    {%-   set b = _sslca_capem -%}
+    {%-   set c = _sslca_mychain -%}
+    cat {{ a }} {{ b }} > {{ c }}
+    {%- endif -%}
+
+  args:
+    creates: "{{ _sslca_mychain }}"
+    chdir: '{{ _sslca_rootfiles }}'
+
+  delegate_to: localhost
+  check_mode: false
+
+  when: _sslca_parent
+
+  tags: always
