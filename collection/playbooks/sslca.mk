@@ -15,7 +15,10 @@ sslca-overview: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible-playbook \
@@ -37,7 +40,10 @@ sslca-authority-build: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -60,7 +66,10 @@ sslca-certificate-build: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
