@@ -35,17 +35,7 @@
 - name: Validate role variables using Pydantic
 
   enasisnetwork.certauth.sslca.params:
-
-    authority: >-
-      {{ sslca_authority | default(omit) }}
-    certificate: >-
-      {{ sslca_certificate | default(omit) }}
-    persist: >-
-      {{ sslca_persist | default(omit) }}
-    defaults: >-
-      {{ sslca_defaults | default(omit) }}
-    openssl: >-
-      {{ sslca_openssl | default(omit) }}
+    prefix: sslca_
 
   register: pbvalidate
 
@@ -57,6 +47,7 @@
 
 
 - name: Declare relevant playbook variables
+  # Required to maintain child null values
 
   ansible.builtin.set_fact:
 
