@@ -10,6 +10,16 @@
       ansible.builtin.include_role:
         name: enasisnetwork.certauth.sslca
         tasks_from: params
+      vars:
+        sslca_persist:
+          rootkeys: /dev/null
+          rootfiles: /dev/null
+          certkeys: /dev/null
+          certfiles: /dev/null
+        sslca_defaults:
+          company: Enasis Network
+          department: Certificate Authority
+          country: US
 
     - name: Include downstream tasks within roles
       ansible.builtin.include_role:

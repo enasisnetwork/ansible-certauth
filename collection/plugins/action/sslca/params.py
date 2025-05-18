@@ -40,7 +40,7 @@ class RoleParams(BaseModel, extra='forbid'):
 
     authority: Annotated[
         Optional[list[ParentParams]],
-        Field(...,
+        Field(None,
               description='Certificate authority parameters',
               min_length=1)]
 
@@ -62,7 +62,7 @@ class RoleParams(BaseModel, extra='forbid'):
 
     openssl: Annotated[
         str,
-        Field('/usr/bin/openssl',
+        Field(...,
               description='Path to OpenSSL executable binary',
               min_length=5)]
 
