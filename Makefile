@@ -225,6 +225,11 @@ cleanup-ansible:
 		-name '.ansible' \
 		-exec rm -rf '{}' \; \
 		2>/dev/null || true
+	@find . \
+		-maxdepth 1 \
+		-name 'collections' \
+		-exec rm -rf '{}' \; \
+		2>/dev/null || true
 	$(call MAKE_PR1NT,<cD>DONE<c0>)
 	@#
 	$(call MAKE_PR3NT,\

@@ -13,7 +13,11 @@ from sys import executable
 
 from _pytest.capture import CaptureFixture
 
+from encommon.utils.stdout import strip_ansi
+
 from pytest_ansible.molecule import MoleculeScenario
+
+from . import SAMPLES
 
 
 
@@ -34,14 +38,16 @@ def test_default(
 
     proc = molecule_scenario.test()
 
-    assert proc.returncode == 1
+    assert proc.returncode == 0
 
 
     stdout, stderr = (
         capfd.readouterr())
 
+    stdout = strip_ansi(stdout)
+
     expect = (
-        'No key/value '
-        'pairs provided')
+        (SAMPLES / 'overview.txt')
+        .read_text())
 
     assert expect in stdout

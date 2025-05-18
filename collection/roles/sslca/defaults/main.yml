@@ -6,12 +6,4 @@
 
 
 
-
-
-
-- name: Information about the inventory hosts
-
-  enasisnetwork.utility.overview:
-    prefix: ['sslca_', '_sslca_']
-
-  tags: always
+sslca_openssl: /usr/bin/openssl
