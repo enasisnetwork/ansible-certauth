@@ -23,7 +23,9 @@
     - path: '{{ _sslmy_certfiles }}/csr'
 
   loop_control:
-    label: '{{ item.path | basename(2) }}'
+    label: >-
+      {{ item.path
+         | enasisnetwork.utility.basename(2) }}
 
   delegate_to: localhost
 

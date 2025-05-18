@@ -26,7 +26,9 @@
     - path: '{{ _sslca_certfiles }}'
 
   loop_control:
-    label: '{{ item.path | basename(1) }}'
+    label: >-
+      {{ item.path
+         | enasisnetwork.utility.basename(1) }}
 
   delegate_to: localhost
 

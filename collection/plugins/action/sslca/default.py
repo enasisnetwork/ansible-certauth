@@ -8,6 +8,7 @@ is permitted, for more information consult the project license file.
 
 
 # NOTE Do not forget about params.yml
+# NOTE Remember to update README file
 
 
 

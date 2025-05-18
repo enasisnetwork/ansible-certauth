@@ -22,7 +22,9 @@
       dest: '{{ _sslmy_mycnf }}'
 
   loop_control:
-    label: '{{ item.dest | basename(2) }}'
+    label: >-
+      {{ item.dest
+         | enasisnetwork.utility.basename(2) }}
 
   delegate_to: localhost
 
