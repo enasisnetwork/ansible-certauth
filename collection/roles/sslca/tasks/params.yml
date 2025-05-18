@@ -10,7 +10,8 @@
 
 
 - name: Declare relevant playbook variables
-  # Important to force parsing with Jinja2
+  # Important force parsing with Jinja2
+  # NOTE Remember to update README file
 
   ansible.builtin.set_fact:
 
@@ -18,10 +19,29 @@
       {{ sslca_authority | default(omit) }}
     sslca_certificate: >-
       {{ sslca_certificate | default(omit) }}
+
     sslca_persist: >-
       {{ sslca_persist | default(omit) }}
+    sslca_persist_rootkeys: >-
+      {{ sslca_persist_rootkeys | default(omit) }}
+    sslca_persist_rootfiles: >-
+      {{ sslca_persist_rootfiles | default(omit) }}
+    sslca_persist_certkeys: >-
+      {{ sslca_persist_certkeys | default(omit) }}
+    sslca_persist_certfiles: >-
+      {{ sslca_persist_certfiles | default(omit) }}
+
     sslca_defaults: >-
       {{ sslca_defaults | default(omit) }}
+    sslca_defaults_company: >-
+      {{ sslca_defaults_company | default(omit) }}
+    sslca_defaults_department: >-
+      {{ sslca_defaults_department | default(omit) }}
+    sslca_defaults_country: >-
+      {{ sslca_defaults_country | default(omit) }}
+    sslca_defaults_website: >-
+      {{ sslca_defaults_website | default(omit) }}
+
     sslca_openssl: >-
       {{ sslca_openssl | default(omit) }}
 
@@ -47,7 +67,7 @@
 
 
 - name: Declare relevant playbook variables
-  # Required to maintain child null values
+  # Required to retain child null value
 
   ansible.builtin.set_fact:
 
