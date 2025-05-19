@@ -8,7 +8,7 @@
 .PHONY: sslca-overview
 sslca-overview: \
 	.check-stage .check-limit
-	@## Dump information related to operation
+	@## Information about the role operations
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>sslca-overview<c0>)
@@ -59,7 +59,7 @@ sslca-authority-build: \
 .PHONY: sslca-certificate-build
 sslca-certificate-build: \
 	.check-stage .check-limit
-	@## Construct and sign the certificates
+	@## Construct the certificate from request
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>sslca-certificate-build<c0>)

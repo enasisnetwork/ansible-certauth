@@ -1,36 +1,12 @@
 # Enasis Network Ansible Certificates Collection
 
-> :warning: This project has not released its first major version.
+> This project has not released its first major version.
 
-Project for executing the Ansible playbooks for system automation.
+Ansible content for managing private key infrastructure authorities.
 
-## Playbooks and roles within project
-- `sslca` Manage the certificate authority for SSL.
-- `sshca` Manage the certificate authority for SSH.
-
-## Variables for Ansible inventory
-
-### Certificate Authority
-Validation using [this model](collection/plugins/action/sslca/params.py)
-after [Ansible Jinja2 parsing](collection/roles/sslca/tasks/params.yml).
-- `sslca_authority`
-- `sslca_certificate`
-- `sslca_persist`
-  - You may specify values here, or in explicit below.
-- `sslca_persist_rootkeys`
-- `sslca_persist_rootfiles`
-- `sslca_persist_certkeys`
-- `sslca_persist_certfiles`
-- `sslca_defaults`
-  - You may specify values here, or in explicit below.
-- `sslca_defaults_company`
-- `sslca_defaults_department`
-- `sslca_defaults_country`
-- `sslca_defaults_website`
-- `sslca_openssl`
-
-
-# NOTE Remember to update the README file
+Check out this collection on
+[Ansible Galaxy](https://galaxy.ansible.com/ui/repo/published/enasisnetwork/certauth)
+for more information.
 
 ## Quick start for local development
 Start by cloning the repository to your local machine.
