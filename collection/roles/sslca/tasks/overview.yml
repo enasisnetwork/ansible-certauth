@@ -9,7 +9,7 @@
 
 
 
-- name: Information about the inventory hosts
+- name: Information about the role operations
 
   enasisnetwork.utility.overview:
     prefix: ['sslca_', '_sslca_']

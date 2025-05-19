@@ -1,0 +1,22 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+DOCUMENTATION:
+  name: params
+  short_description: Validate parameters with Pydantic.
+  version_added: '0.2.0'
+  description:
+    - Validates the parameters using the Pydantic BaseModel.
+  author:
+    - Robert Harris
+    - Enasis Network
+  options:
+    prefix:
+      description:
+        - Prefix for matching variable names.
+      type: str
