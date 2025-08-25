@@ -1,16 +1,16 @@
 ────────────────────────────────────────────────────────────
 enaspki1
   sslca_openssl: '/usr/bin/openssl'
-  sslca_persist: dict
-    rootkeys: '/dev/null'
-    rootfiles: '/dev/null'
-    certkeys: '/dev/null'
-    certfiles: '/dev/null'
   sslca_defaults: dict
     company: 'Enasis Network'
     department: 'Certificate Authority'
     country: 'US'
     website: None
-  sslca_authority: ''
-  sslca_certificate: ''
+  sslca_persist: dict
+    rootkeys: '/dev/null'
+    rootfiles: '/dev/null'
+    certkeys: '/dev/null'
+    certfiles: '/dev/null'
+  sslca_authority: None
+  sslca_certificate: None
 ────────────────────────────────────────────────────────────

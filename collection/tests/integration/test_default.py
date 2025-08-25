@@ -34,7 +34,7 @@ def test_default(
 
     environ['PATH'] = (
         f'{Path(executable).parent}'
-        f":{environ['PATH']}")
+        f":{environ['PATH']}")  # noqa: LIT001
 
     proc = molecule_scenario.test()
 
