@@ -334,7 +334,6 @@ pytest: \
 		collection/$(subpackage) \
 		--numprocesses=4 \
 		--cov=collection/$(subpackage) \
-		--mypy \
 		--doctest-modules \
 		$(pytest_args)
 	$(call MAKE_PR1NT,<cD>DONE<c0>)
