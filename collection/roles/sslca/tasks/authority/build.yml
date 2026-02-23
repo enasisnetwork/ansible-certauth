@@ -59,7 +59,7 @@
   delegate_to: localhost
   check_mode: false
 
-  when: not _sslca_parent
+  when: not _sslca_parent | enasisnetwork.utility.present
 
   tags: always
 
@@ -118,7 +118,7 @@
   delegate_to: localhost
   check_mode: false
 
-  when: _sslca_parent
+  when: _sslca_parent | enasisnetwork.utility.present
 
   tags: always
 
@@ -146,6 +146,6 @@
   delegate_to: localhost
   check_mode: false
 
-  when: _sslca_parent
+  when: _sslca_parent | enasisnetwork.utility.present
 
   tags: always

@@ -48,10 +48,25 @@
         -pubout
         -out {{ _sslmy_rsapub }}
 
+    - creates: '{{ _sslmy_pkcs12 }}'
+      command: >-
+        {{ sslca_openssl }} pkcs12
+        -export
+        -out {{ _sslmy_pkcs12 }}
+        -inkey {{ _sslmy_rsakey }}
+        -in {{ _sslmy_mycert }}
+        -chain
+        -CAfile {{ _sslca_chain }}
+        -CSP "Microsoft RSA SChannel Cryptographic Provider"
+        -passout pass:""
+      when: '{{ "pkcs12" in _sslmy_extras }}'
+
   loop_control:
     label: '{{ item.creates | basename }}'
 
   delegate_to: localhost
   check_mode: false
+
+  when: item.when | default(true) | bool
 
   tags: always

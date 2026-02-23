@@ -1,11 +1,11 @@
-{% set aliases = [] %}
-{% if _sslmy_kind != 'person' %}
-{%   do aliases.append(_sslmy_common) %}
-{% endif %}
-{% if _sslmy_alias %}
-{%   do aliases.extend(_sslmy_alias) %}
-{% endif %}
-{% set aliases = aliases | dedup_list %}
+{% set aliases =
+     (([] if _sslmy_kind == 'person'
+        or not _sslmy_common | enasisnetwork.utility.present
+        else [_sslmy_common])
+      + (_sslmy_alias
+         if _sslmy_alias | enasisnetwork.utility.present
+         else []))
+     | enasisnetwork.utility.dedup_list %}
 [req]
 default_bits = 2048
 encrypt_key = no

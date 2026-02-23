@@ -63,7 +63,7 @@
     label: '{{ _authority.name }}'
     loop_var: _authority
 
-  when: sslca_authority | default
+  when: sslca_authority | enasisnetwork.utility.present
 
   tags: authority-build
 
@@ -92,7 +92,7 @@
     label: '{{ _certificate.name }}'
     loop_var: _certificate
 
-  when: sslca_certificate | default
+  when: sslca_certificate | enasisnetwork.utility.present
 
   tags: certificate-build
 

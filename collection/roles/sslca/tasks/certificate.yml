@@ -33,6 +33,10 @@
       {{ _authority.name }}
     _sslca_password: >-
       {{ _authority.password }}
+    _sslca_chain: >-
+      {{ sslca_persist.rootfiles }}/
+      {{- _authority.name }}/certs/
+      {{- _authority.name }}.chain.pem
 
     _sslmy_name: >-
       {{ _certificate.name }}
@@ -44,6 +48,8 @@
       {{ _certificate.alias }}
     _sslmy_expire: >-
       {{ _certificate.expire }}
+    _sslmy_extras: >-
+      {{ _certificate.extras or [] }}
 
   tags: always
 
@@ -77,6 +83,9 @@
     _sslmy_rsapub: >-
       {{ _sslmy_certfiles }}/certs/
       {{- _sslmy_name }}.rsa.pub
+    _sslmy_pkcs12: >-
+      {{ _sslmy_certfiles }}/certs/
+      {{- _sslmy_name }}.p12
 
   tags: always
 
