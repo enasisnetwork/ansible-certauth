@@ -90,7 +90,7 @@
       {{-   item.password -}}
       {%- endfor -%}
 
-  when: _sslca_parent
+  when: _sslca_parent | enasisnetwork.utility.present
 
   tags: always
 

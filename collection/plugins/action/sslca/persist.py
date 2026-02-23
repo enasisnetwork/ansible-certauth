@@ -71,16 +71,17 @@ class PersistParams(BaseModel, extra='forbid'):
 
             value = getattr(self, check)
 
-            exists = (
+            parent = (
                 Path(value)
-                .parent
-                .exists())
+                .parent)
+
+            exists = parent.exists()
 
             if exists is True:
                 continue
 
             raise ValueError(
-                f'{check} path does not'
+                f'{parent} path does not'
                 ' exist on filesystem')
 
         return self

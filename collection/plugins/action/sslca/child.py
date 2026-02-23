@@ -68,12 +68,36 @@ class ChildParams(BaseModel, extra='forbid'):
               min_length=20,
               max_length=32)]
 
+    extras: Annotated[
+        Optional[list[Literal['pkcs12']]],
+        Field(None,
+              description='Additional output certificates')]
+
 
     @field_validator(
         'alias',
         mode='before')
     @classmethod
     def parse_alias(
+        # NOCVR
+        cls,
+        value: Any,  # noqa: ANN401
+    ) -> list[str]:
+        """
+        Perform advanced validation on the parameters provided.
+        """
+
+        if isinstance(value, list):
+            return value
+
+        return [value]
+
+
+    @field_validator(
+        'extras',
+        mode='before')
+    @classmethod
+    def parse_extras(
         # NOCVR
         cls,
         value: Any,  # noqa: ANN401

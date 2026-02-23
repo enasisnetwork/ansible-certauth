@@ -26,10 +26,13 @@
 - name: Assert the minimum version for OpenSSL
 
   ansible.builtin.assert:
-    that: >-
+    that: openssl_version >= 3.0
+
+  vars:
+    openssl_version: >-
       {%- set output = _openssl_version.stdout -%}
       {%- set version = output.split(' ')[1] -%}
       {%- set version = version.split('.')[:2] -%}
-      {{- version | join('.') | float >= 3.0 -}}
+      {{- version | join('.') | float -}}
 
   tags: always
