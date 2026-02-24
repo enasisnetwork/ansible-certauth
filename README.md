@@ -8,6 +8,16 @@ Check out this collection on
 [Ansible Galaxy](https://galaxy.ansible.com/ui/repo/published/enasisnetwork/certauth)
 for more information.
 
+<a href="https://galaxy.ansible.com/ui/repo/published/enasisnetwork/certauth"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/galaxy.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/flake8.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/flake8.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/pylint.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/pylint.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/ruff.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/ruff.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/mypy.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/mypy.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/yamllint.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/yamllint.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/ansblint.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/ansblint.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/pytest.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/pytest.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-certauth/validate/coverage.txt"><img src="https://enasisnetwork.github.io/ansible-certauth/badges/coverage.png"></a><br>
+
 ## Quick start for local development
 Start by cloning the repository to your local machine.
 ```
