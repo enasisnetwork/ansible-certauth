@@ -5,7 +5,7 @@
 namespace: enasisnetwork
 name: certauth
 description: Enasis Network Ansible Certificates Collection
-version: 0.2.3
+version: 0.2.4
 readme: README.md
 authors:
   - Robert Harris (https://github.com/enrh)
