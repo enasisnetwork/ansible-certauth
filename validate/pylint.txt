@@ -1,0 +1,5 @@
+>>> make pylint
+  ● Executing pylint in collection..
+    DONE
+  ● Executing pylint on makefile.py..
+    DONE

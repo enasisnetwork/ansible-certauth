@@ -1,0 +1,11 @@
+>>> make yamllint
+  ● Executing yamllint in collection..
+    DONE
+  ● Executing yamllint on .yamllint..
+    DONE
+  ● Executing yamllint on .ansible-lint..
+    DONE
+  ● Executing yamllint in collection..
+    DONE
+  ● Executing yamllint in .github..
+    DONE

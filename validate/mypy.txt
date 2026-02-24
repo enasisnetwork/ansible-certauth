@@ -1,0 +1,5 @@
+>>> make mypy
+  ● Executing mypy in collection..
+    DONE
+  ● Executing mypy on makefile.py..
+    DONE

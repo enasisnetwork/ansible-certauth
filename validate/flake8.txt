@@ -1,0 +1,5 @@
+>>> make flake8
+  ● Executing flake8 in collection..
+    DONE
+  ● Executing flake8 on makefile.py..
+    DONE

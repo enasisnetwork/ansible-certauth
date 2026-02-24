@@ -1,0 +1,16 @@
+Name                                           Stmts   Miss  Cover
+------------------------------------------------------------------
+collection/__init__.py                             0      0   100%
+collection/plugins/__init__.py                     0      0   100%
+collection/plugins/action/__init__.py              0      0   100%
+collection/plugins/action/sslca/__init__.py        0      0   100%
+collection/plugins/action/sslca/child.py          16      0   100%
+collection/plugins/action/sslca/default.py         9      0   100%
+collection/plugins/action/sslca/params.py         22      0   100%
+collection/plugins/action/sslca/parent.py         12      0   100%
+collection/plugins/action/sslca/persist.py        10      0   100%
+collection/tests/__init__.py                       0      0   100%
+collection/tests/integration/__init__.py           2      0   100%
+collection/tests/integration/test_default.py      15      0   100%
+------------------------------------------------------------------
+TOTAL                                             86      0   100%

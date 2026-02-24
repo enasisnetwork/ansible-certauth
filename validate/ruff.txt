@@ -1,0 +1,5 @@
+>>> make ruff
+  ● Executing ruff in collection..
+    DONE
+  ● Executing ruff on makefile.py..
+    DONE
