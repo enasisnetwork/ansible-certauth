@@ -14,7 +14,7 @@ permissions:
 on:  # yamllint disable-line rule:truthy
 
   schedule:
-    - cron: '0 14 * * MON,FRI'
+    - cron: '0 12 * * FRI'
 
   pull_request:
 
@@ -26,11 +26,11 @@ jobs:
 
 
 
-  ################
-  ## Validation ##
-  ################
-  validate:
-    name: Validation
+  #################
+  ## Python 3.12 ##
+  #################
+  validate312:
+    name: Python 3.12
     runs-on: ubuntu-latest
     env:
       PYTHON: python3
@@ -43,19 +43,308 @@ jobs:
         with: {python-version: '3.12'}
 
       # Standard project construction
+      # NOTE Needed to read galaxy.yml
       - name: Install PyYAML from PyPi
         run: pip install pyyaml
+
 
       # Standard project construction
       - name: Checkout main branch
         uses: actions/checkout@v4
-
+        with:
+          path: main
 
       # Standard project construction
+      - name: Checkout static branch
+        uses: actions/checkout@v4
+        with:
+          ref: static
+          path: static
+
+
+      # Build the test environment
       - name: Build environment
-        run: make -s venv-create
+        working-directory: main
+        run: |
+          make -s venv-create
+          pip install ansi2txt
+
+      # Build the test environment
+      - name: Build environment
+        working-directory: static
+        run: mkdir -p validate
 
 
-      # Validate the Ansible project
-      - name: Run all validators
-        run: make -s check
+      # Validate the Python project
+      - name: Lint using Flake8
+        id: flake8
+        working-directory: main
+        run: |
+          set -oe pipefail
+          make -s flake8 \
+            | tee ../static/validate/flake8.txt
+        continue-on-error: true
+
+      # Validate the Python project
+      - name: Lint using Pylint
+        id: pylint
+        working-directory: main
+        run: |
+          set -oe pipefail
+          make -s pylint \
+            | tee ../static/validate/pylint.txt
+        continue-on-error: true
+
+      # Validate the Python project
+      - name: Lint using Ruff
+        id: ruff
+        working-directory: main
+        run: |
+          set -oe pipefail
+          make -s ruff \
+            | tee ../static/validate/ruff.txt
+        continue-on-error: true
+
+      # Validate the Python project
+      - name: Lint using Mypy
+        id: mypy
+        working-directory: main
+        run: |
+          set -oe pipefail
+          make -s mypy \
+            | tee ../static/validate/mypy.txt
+        continue-on-error: true
+
+      # Validate the Python project
+      - name: Lint using YAMLlint
+        id: yamllint
+        working-directory: main
+        run: |
+          set -oe pipefail
+          make -s yamllint \
+            | tee ../static/validate/yamllint.txt
+        continue-on-error: true
+
+      # Validate the Python project
+      - name: Lint using Ansible Lint
+        id: ansblint
+        working-directory: main
+        run: |
+          set -oe pipefail
+          make -s ansblint \
+            | tee ../static/validate/ansblint.txt
+        continue-on-error: true
+
+      # Validate the Python project
+      - name: Test with Pytest
+        id: pytest
+        working-directory: main
+        run: |
+          set -oe pipefail
+          make -s pytest \
+            | tee ../static/validate/pytest.txt
+        continue-on-error: true
+
+
+      # Construct additional content
+      - name: Process previous steps
+        working-directory: main
+        run: |
+
+          ansi2txt \
+            < ../static/validate/flake8.txt \
+            > ../static/validate/flake8.tmp
+
+          mv ../static/validate/flake8.tmp \
+            ../static/validate/flake8.txt
+
+          ansi2txt \
+            < ../static/validate/pylint.txt \
+            > ../static/validate/pylint.tmp
+
+          mv ../static/validate/pylint.tmp \
+            ../static/validate/pylint.txt
+
+          ansi2txt \
+            < ../static/validate/ruff.txt \
+            > ../static/validate/ruff.tmp
+
+          mv ../static/validate/ruff.tmp \
+            ../static/validate/ruff.txt
+
+          ansi2txt \
+            < ../static/validate/mypy.txt \
+            > ../static/validate/mypy.tmp
+
+          mv ../static/validate/mypy.tmp \
+            ../static/validate/mypy.txt
+
+          ansi2txt \
+            < ../static/validate/yamllint.txt \
+            > ../static/validate/yamllint.tmp
+
+          mv ../static/validate/yamllint.tmp \
+            ../static/validate/yamllint.txt
+
+          ansi2txt \
+            < ../static/validate/ansblint.txt \
+            > ../static/validate/ansblint.tmp
+
+          mv ../static/validate/ansblint.tmp \
+            ../static/validate/ansblint.txt
+
+          ansi2txt \
+            < ../static/validate/pytest.txt \
+            > ../static/validate/pytest.tmp
+
+          mv ../static/validate/pytest.tmp \
+            ../static/validate/pytest.txt
+
+          .venv-package/bin/coverage report \
+            > ../static/validate/coverage.txt
+
+
+      # Construct additional content
+      - name: Generate validation JSON
+        if: github.ref_name == 'main'
+        run: |
+
+          FLAKE8="unknown"
+          PYLINT="unknown"
+          RUFF="unknown"
+          MYPY="unknown"
+          YAMLLINT="unknown"
+          ANSBLINT="unknown"
+          PYTEST="unknown"
+          COVERAGE="unknown"
+
+          OUTCOME="${{ steps.flake8.outcome }}"
+          if [[ "$OUTCOME" == "success" ]]; then
+            FLAKE8="passing"
+          elif [[ "$OUTCOME" == "failure" ]]; then
+            FLAKE8="failing"
+          fi
+
+          OUTCOME="${{ steps.pylint.outcome }}"
+          if [[ "$OUTCOME" == "success" ]]; then
+            PYLINT="passing"
+          elif [[ "$OUTCOME" == "failure" ]]; then
+            PYLINT="failing"
+          fi
+
+          OUTCOME="${{ steps.ruff.outcome }}"
+          if [[ "$OUTCOME" == "success" ]]; then
+            RUFF="passing"
+          elif [[ "$OUTCOME" == "failure" ]]; then
+            RUFF="failing"
+          fi
+
+          OUTCOME="${{ steps.mypy.outcome }}"
+          if [[ "$OUTCOME" == "success" ]]; then
+            MYPY="passing"
+          elif [[ "$OUTCOME" == "failure" ]]; then
+            MYPY="failing"
+          fi
+
+          OUTCOME="${{ steps.yamllint.outcome }}"
+          if [[ "$OUTCOME" == "success" ]]; then
+            YAMLLINT="passing"
+          elif [[ "$OUTCOME" == "failure" ]]; then
+            YAMLLINT="failing"
+          fi
+
+          OUTCOME="${{ steps.ansblint.outcome }}"
+          if [[ "$OUTCOME" == "success" ]]; then
+            ANSBLINT="passing"
+          elif [[ "$OUTCOME" == "failure" ]]; then
+            ANSBLINT="failing"
+          fi
+
+          OUTCOME="${{ steps.pytest.outcome }}"
+          if [[ "$OUTCOME" == "success" ]]; then
+            PYTEST="passing"
+            COVERAGE=$(jq -r \
+              '.totals.percent_covered_display' \
+              < main/coverage.json)
+          elif [[ "$OUTCOME" == "failure" ]]; then
+            PYTEST="failing"
+          fi
+
+          # Create the JSON dictionary
+          OUTPUT=$(cat <<EOF
+          {
+            "flake8": "$FLAKE8",
+            "pylint": "$PYLINT",
+            "ruff": "$RUFF",
+            "mypy": "$MYPY",
+            "yamllint": "$YAMLLINT",
+            "ansblint": "$ANSBLINT",
+            "pytest": "$PYTEST",
+            "coverage": "$COVERAGE"
+          }
+          EOF
+          )
+
+          echo "$OUTPUT" > static/validate/index.json
+
+
+      # Save content in static branch
+      - name: Store static content
+        if: github.ref_name == 'main'
+        run: |
+
+          git config --global \
+            user.email "github@workflow"
+
+          git config --global \
+            user.name "GitHub Workflows"
+
+          cd static
+          git add validate
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m 'Update from workflow'
+            git push origin static
+          fi
+
+
+      # Final check for any failure
+      - name: Check for failures
+        run: |
+
+          OUTCOME="${{ steps.flake8.outcome }}"
+          if [[ "$OUTCOME" == "failure" ]]; then
+            exit 1
+          fi
+
+          OUTCOME="${{ steps.pylint.outcome }}"
+          if [[ "$OUTCOME" == "failure" ]]; then
+            exit 1
+          fi
+
+          OUTCOME="${{ steps.ruff.outcome }}"
+          if [[ "$OUTCOME" == "failure" ]]; then
+            exit 1
+          fi
+
+          OUTCOME="${{ steps.mypy.outcome }}"
+          if [[ "$OUTCOME" == "failure" ]]; then
+            exit 1
+          fi
+
+          OUTCOME="${{ steps.yamllint.outcome }}"
+          if [[ "$OUTCOME" == "failure" ]]; then
+            exit 1
+          fi
+
+          OUTCOME="${{ steps.ansblint.outcome }}"
+          if [[ "$OUTCOME" == "failure" ]]; then
+            exit 1
+          fi
+
+          OUTCOME="${{ steps.pytest.outcome }}"
+          if [[ "$OUTCOME" == "failure" ]]; then
+            exit 1
+          fi

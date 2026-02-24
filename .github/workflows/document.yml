@@ -1,0 +1,285 @@
+---
+
+# Does include the Galaxy badge
+
+# yamllint disable rule:line-length
+
+
+
+#####################
+## GitHub Workflow ##
+#####################
+
+name: Documentation
+
+permissions:
+  contents: write
+
+on:  # yamllint disable-line rule:truthy
+
+  workflow_run:
+    workflows:
+      - Validation
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+
+
+
+  #################
+  ## Python 3.12 ##
+  #################
+  validate312:
+    name: Python 3.12
+    runs-on: ubuntu-latest
+    env:
+      PYTHON: python3
+    steps:
+
+
+      # Standard project construction
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with: {python-version: '3.12'}
+
+      # Standard project construction
+      # NOTE Needed to read galaxy.yml
+      - name: Install PyYAML from PyPi
+        run: pip install pyyaml
+
+      # Additional workflow dependency
+      - name: Compile ImageMagick
+        run: |
+
+          sudo apt-get update
+
+          sudo apt-get install -y \
+            build-essential \
+            ghostscript \
+            libjpeg-dev \
+            libpng-dev \
+            libtiff-dev \
+            libgif-dev
+
+          wget https://download.imagemagick.org/ImageMagick/download/ImageMagick.tar.gz
+
+          tar xvzf ImageMagick.tar.gz
+
+          cd ImageMagick-*
+
+          ./configure
+          make
+          sudo make install
+
+          sudo ldconfig /usr/local/lib
+
+
+      # Standard project construction
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          path: main
+
+      # Standard project construction
+      - name: Checkout static branch
+        uses: actions/checkout@v4
+        with:
+          ref: static
+          path: static
+
+
+      # Build the test environment
+      - name: Build environment
+        working-directory: main
+        run: |
+
+          make -s venv-create
+
+          pip install \
+            encommon \
+            weasyprint wand
+
+      # Build the test environment
+      - name: Build environment
+        working-directory: static
+        run: mkdir -p badges
+
+
+      # Construct additional content
+      - name: Cache the information
+        run: |
+
+          FLAKE8="unknown"
+          PYLINT="unknown"
+          RUFF="unknown"
+          MYPY="unknown"
+          YAMLLINT="unknown"
+          ANSBLINT="unknown"
+          PYTEST="unknown"
+          COVERAGE="unknown"
+
+          if [ -f "static/validate/index.json" ]; then
+            FLAKE8=$(jq -r '.flake8 // "unknown"' static/validate/index.json)
+            PYLINT=$(jq -r '.pylint // "unknown"' static/validate/index.json)
+            RUFF=$(jq -r '.ruff // "unknown"' static/validate/index.json)
+            MYPY=$(jq -r '.mypy // "unknown"' static/validate/index.json)
+            YAMLLINT=$(jq -r '.yamllint // "unknown"' static/validate/index.json)
+            ANSBLINT=$(jq -r '.ansblint // "unknown"' static/validate/index.json)
+            PYTEST=$(jq -r '.pytest // "unknown"' static/validate/index.json)
+            COVERAGE=$(jq -r '.coverage // "unknown"' static/validate/index.json)
+          fi
+
+          echo "flake8=$FLAKE8" >> $GITHUB_ENV
+          echo "pylint=$PYLINT" >> $GITHUB_ENV
+          echo "ruff=$RUFF" >> $GITHUB_ENV
+          echo "mypy=$MYPY" >> $GITHUB_ENV
+          echo "yamllint=$YAMLLINT" >> $GITHUB_ENV
+          echo "ansblint=$ANSBLINT" >> $GITHUB_ENV
+          echo "pytest=$PYTEST" >> $GITHUB_ENV
+          echo "coverage=$COVERAGE" >> $GITHUB_ENV
+
+
+      # Construct additional content
+      - name: Build badge for Flake8
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.flake8 }}"
+
+          python makebadge.py \
+            --file "../static/badges/flake8.png" \
+            --label "Flake8" \
+            --value "$STATUS"
+
+      # Construct additional content
+      - name: Build badge for Pylint
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.pylint }}"
+
+          python makebadge.py \
+            --file "../static/badges/pylint.png" \
+            --label "Pylint" \
+            --value "$STATUS"
+
+      # Construct additional content
+      - name: Build badge for Ruff
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.ruff }}"
+
+          python makebadge.py \
+            --file "../static/badges/ruff.png" \
+            --label "Ruff" \
+            --value "$STATUS"
+
+      # Construct additional content
+      - name: Build badge for Mypy
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.mypy }}"
+
+          python makebadge.py \
+            --file "../static/badges/mypy.png" \
+            --label "Mypy" \
+            --value "$STATUS"
+
+      # Construct additional content
+      - name: Build badge for YAMLlint
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.yamllint }}"
+
+          python makebadge.py \
+            --file "../static/badges/yamllint.png" \
+            --label "YAMLlint" \
+            --value "$STATUS"
+
+      # Construct additional content
+      - name: Build badge for Ansible Lint
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.ansblint }}"
+
+          python makebadge.py \
+            --file "../static/badges/ansblint.png" \
+            --label "Ansible Lint" \
+            --value "$STATUS"
+
+      # Construct additional content
+      - name: Build badge for Pytest
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.pytest }}"
+
+          python makebadge.py \
+            --file "../static/badges/pytest.png" \
+            --label "Pytest" \
+            --value "$STATUS"
+
+      # Construct additional content
+      - name: Build badge for Coverage.py
+        working-directory: main
+        run: |
+
+          STATUS="${{ env.coverage }}"
+
+          python makebadge.py \
+            --file "../static/badges/coverage.png" \
+            --label "Coverage.py" \
+            --value "${STATUS}%"
+
+      # Construct additional content
+      - name: Build badge for Galaxy
+        working-directory: main
+        run: |
+
+          PACKAGE="${GITHUB_REPOSITORY##*/}"
+          PACKAGE="${PACKAGE#ansible-}"
+          INFO=$(curl -sL "https://galaxy.ansible.com/api/v3/collections/enasisnetwork/$PACKAGE/")
+
+          VERSION=$( \
+            echo "$INFO" \
+            | jq -r '.highest_version.version // "unknown"')
+
+          RELEASE=$( \
+            echo "$INFO" \
+            | jq -r '.updated_at // "unknown"')
+
+          python makebadge.py \
+            --file "../static/badges/galaxy.png" \
+            --label "Galaxy" \
+            --value "$VERSION" \
+            --color "teal" \
+            --date "$RELEASE"
+
+
+      # Save content in static branch
+      - name: Store static content
+        if: github.ref_name == 'main'
+        run: |
+
+          git config --global \
+            user.email "github@workflow"
+
+          git config --global \
+            user.name "GitHub Workflows"
+
+          cd static
+          git add badges
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m 'Update from workflow'
+            git push origin static
+          fi
