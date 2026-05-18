@@ -1,2 +1,2 @@
-encommon>=0.22.11
+encommon>=0.23.0
 jmespath

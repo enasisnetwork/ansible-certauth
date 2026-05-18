@@ -28,13 +28,13 @@ ansible-playbook \
 
 ## Variables for Ansible inventory
 - `sslca_authority` Certificate authority parameters
-    - Expects `list[dict]` or `dict[str, list[dict]]`
+    - Expects `list[dict]` or `dict[str, dict]`
     - `name` Used for the directory naming
     - `password` Passphrase for encrypting key
     - `parent` Determine to be an intermediate
     - `expire` When new certificates expire
 - `sslca_certificate` Signed certificate parameters
-    - Expects `list[dict]` or `dict[str, list[dict]]`
+    - Expects `list[dict]` or `dict[str, dict]`
     - `name` Used for the directory naming
     - `kind` Kind of certificate to create
     - `common` Common name for certificate
