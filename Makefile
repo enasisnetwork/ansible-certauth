@@ -14,12 +14,15 @@ VENVD ?= .venv-develop
 
 
 
-MAKE_COLOR ?= 6
+MAKE_COLOR = 6
 
-MAKE_PRINT = @COLOR=$(MAKE_COLOR) \
-	$(PYTHON) -Bc 'if 1: \
-		from makefile import makeout; \
-		makeout("$(1)", "$(2)");'
+MAKE_PRINT = \
+	@$(PYTHON) -Bc 'if 1: \
+		from enbasics import makeout; \
+		makeout( \
+			color=$(MAKE_COLOR), \
+			string="$(1)", \
+			prefix="$(2)");'
 
 MAKE_PR1NT = $(call MAKE_PRINT,$(1),text)
 MAKE_PR2NT = $(call MAKE_PRINT,$(1),base)
@@ -27,19 +30,24 @@ MAKE_PR3NT = $(call MAKE_PRINT,$(1),more)
 
 
 
-PROJECT := $(shell \
-	$(PYTHON) -Bc 'if 1: \
-		from makefile import PROJECT; \
-		print(PROJECT);')
-
-
-
 .PHONY: help
 help: .check-python
 	@## Construct this helpful menu of recipes
 	$(call MAKE_PRINT)
-	@COLOR=$(MAKE_COLOR) \
-		$(PYTHON) -B makefile.py
+	@$(PYTHON) -Bc 'if 1: \
+		from pathlib import Path; \
+		from enbasics import makefile; \
+		from yaml import safe_load; \
+		PROJECT = Path.cwd(); \
+		_GFILE = Path("galaxy.yml"); \
+		_GTEXT = _GFILE.read_text(); \
+		GALAXY = safe_load(_GTEXT); \
+		VERSION = GALAXY["version"]; \
+		makefile( \
+			color=$(MAKE_COLOR), \
+			path="Makefile", \
+			name=PROJECT.name, \
+			version=VERSION);'
 	$(call MAKE_PRINT)
 
 
@@ -180,7 +188,7 @@ cleanup-ruff:
 		<cD>make <cL>cleanup-ruff<c0>)
 	@#
 	$(call MAKE_PR3NT,\
-		<c37>Removing <c90>mypy<c37> \
+		<c37>Removing <c90>ruff<c37> \
 		cache files..<c0>)
 	@find . \
 		-maxdepth 1 \
@@ -330,7 +338,7 @@ pytest: \
 	$(call MAKE_PR3NT,\
 		<c37>Executing <c90>pytest<c37> \
 		in <c90>collection<c37>..<c0>)
-	$(VENVP)/bin/pytest -v \
+	@$(VENVP)/bin/pytest -v \
 		collection/$(subpackage) \
 		--numprocesses=4 \
 		--cov=collection/$(subpackage) \
@@ -367,14 +375,6 @@ mypy: \
 		--no-error-summary \
 		$(mypy_args) collection
 	$(call MAKE_PR1NT,<cD>DONE<c0>)
-	@#
-	$(call MAKE_PR3NT,\
-		<c37>Executing <c90>mypy<c37> \
-		on <c90>makefile.py<c37>..<c0>)
-	@$(VENVD)/bin/mypy \
-		--no-error-summary \
-		$(mypy_args) makefile.py
-	$(call MAKE_PR1NT,<cD>DONE<c0>)
 
 
 
@@ -391,12 +391,6 @@ flake8: \
 		in <c90>collection<c37>..<c0>)
 	@$(VENVD)/bin/flake8 \
 		collection --allow-star-arg-any
-	$(call MAKE_PR1NT,<cD>DONE<c0>)
-	@#
-	$(call MAKE_PR3NT,\
-		<c37>Executing <c90>flake8<c37> \
-		on <c90>makefile.py<c37>..<c0>)
-	@$(VENVD)/bin/flake8 ./makefile.py
 	$(call MAKE_PR1NT,<cD>DONE<c0>)
 
 
@@ -417,15 +411,6 @@ pylint: \
 		--persistent=n \
 		-d duplicate-code
 	$(call MAKE_PR1NT,<cD>DONE<c0>)
-	@#
-	$(call MAKE_PR3NT,\
-		<c37>Executing <c90>pylint<c37> \
-		on <c90>makefile.py<c37>..<c0>)
-	@$(VENVD)/bin/pylint \
-		-E makefile.py \
-		--persistent=n \
-		-d duplicate-code
-	$(call MAKE_PR1NT,<cD>DONE<c0>)
 
 
 
@@ -442,13 +427,6 @@ ruff: \
 		in <c90>collection<c37>..<c0>)
 	@$(VENVD)/bin/ruff \
 		check -q collection
-	$(call MAKE_PR1NT,<cD>DONE<c0>)
-	@#
-	$(call MAKE_PR3NT,\
-		<c37>Executing <c90>ruff<c37> \
-		on <c90>makefile.py<c37>..<c0>)
-	@$(VENVD)/bin/ruff \
-		check -q makefile.py
 	$(call MAKE_PR1NT,<cD>DONE<c0>)
 
 
@@ -572,7 +550,7 @@ cloc:
 .PHONY: galaxy-build
 galaxy-build: \
 	.check-venv-develop
-	@## Create the Python compatible package
+	@## Create the Galaxy compatible package
 	@#
 	@$(MAKE) cleanup
 	@#

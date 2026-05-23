@@ -14,7 +14,7 @@ permissions:
 on:  # yamllint disable-line rule:truthy
 
   schedule:
-    - cron: '0 12 * * FRI'
+    - cron: '0 13 * * FRI'
 
   pull_request:
 
@@ -66,6 +66,7 @@ jobs:
       - name: Build environment
         working-directory: main
         run: |
+          pip install enbasics
           make -s venv-create
           pip install ansi2txt
 
