@@ -3,7 +3,7 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0 -- /home/runner/work/ansible-certauth/ansible-certauth/main/.venv-package/bin/python3
 cachedir: .pytest_cache
-Using --randomly-seed=686946478
+Using --randomly-seed=799430239
 ansible: 2.21.0
 rootdir: /home/runner/work/ansible-certauth/ansible-certauth/main
 configfile: setup.cfg
@@ -35,7 +35,7 @@ collection/tests/integration/__init__.py           2      0   100%
 collection/tests/integration/test_default.py      15      0   100%
 ------------------------------------------------------------------
 TOTAL                                             86      0   100%
-============================== 1 passed in 50.25s ==============================
+============================== 1 passed in 46.59s ==============================
     DONE
   ● Write coveragepy output to htmlcov..
     DONE
