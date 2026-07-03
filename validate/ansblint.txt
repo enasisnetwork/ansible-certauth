@@ -1,3 +1,92 @@
 >>> make ansblint
   ● Executing ansible-lint on project..
-    DONE
+syntax-check[specific]: A playbook must be a list of plays, got a <class 'ansible.module_utils._internal._datatag._AnsibleTaggedDict'> instead: /home/runner/work/ansible-certauth/ansible-certauth/main/collection/molecule/overview/require.yml
+molecule/overview/require.yml:5:1
+
+syntax-check[specific]: The role 'enasisnetwork.certauth.sslca' was not found in: /home/runner/work/ansible-certauth/ansible-certauth/main/collection/playbooks/roles:/home/runner/work/ansible-certauth/ansible-certauth/main/collection/roles:/home/runner/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/home/runner/work/ansible-certauth/ansible-certauth/main/collection/playbooks
+playbooks/sslca.yml:23:7
+
+fqcn[deep]: Deep plugins directory is discouraged. Move 'plugins/action/sslca/__init__.py' directly under 'plugins/action' folder. (warning)
+plugins/action/sslca/__init__.py:1
+
+fqcn[deep]: Deep plugins directory is discouraged. Move 'plugins/action/sslca/child.py' directly under 'plugins/action' folder. (warning)
+plugins/action/sslca/child.py:1
+
+fqcn[deep]: Deep plugins directory is discouraged. Move 'plugins/action/sslca/default.py' directly under 'plugins/action' folder. (warning)
+plugins/action/sslca/default.py:1
+
+fqcn[deep]: Deep plugins directory is discouraged. Move 'plugins/action/sslca/params.py' directly under 'plugins/action' folder. (warning)
+plugins/action/sslca/params.py:1
+
+fqcn[deep]: Deep plugins directory is discouraged. Move 'plugins/action/sslca/parent.py' directly under 'plugins/action' folder. (warning)
+plugins/action/sslca/parent.py:1
+
+fqcn[deep]: Deep plugins directory is discouraged. Move 'plugins/action/sslca/persist.py' directly under 'plugins/action' folder. (warning)
+plugins/action/sslca/persist.py:1
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_alias)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_certfiles)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_certkeys)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_common)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_expire)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_extras)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_kind)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_name)
+roles/sslca/tasks/certificate.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_mycert)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_mychain)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_mycnf)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_mycsr)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_mykey)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_pkcs12)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_rsakey)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_rsapub)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_thumb)
+roles/sslca/tasks/certificate.yml:58:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_cachain)
+roles/sslca/tasks/certificate.yml:94:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_cacnf)
+roles/sslca/tasks/certificate.yml:94:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (set_fact: _sslmy_capass)
+roles/sslca/tasks/certificate.yml:94:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (register: pbvalidate)
+roles/sslca/tasks/params.yml:55:13 Task/Handler: Validate role variables using Pydantic
+
+var-naming[no-role-prefix]: Variables names from within roles should use sslca_ as a prefix. (register: _openssl_version)
+roles/sslca/tasks/validate.yml:12:13 Task/Handler: Collect the current version of OpenSSL
+
