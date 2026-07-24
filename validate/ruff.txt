@@ -1,3 +1,586 @@
 >>> make ruff
   ● Executing ruff in collection..
-    DONE
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/sslca/child.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Any
+17 | | from typing import Literal
+18 | | from typing import Optional
+19 | |
+20 | | from encommon.times import Time
+21 | | from encommon.types import BaseModel
+22 | |
+23 | | from pydantic import Field
+24 | | from pydantic import field_validator
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Literal
+   - from typing import Optional
+15 + from typing import Annotated, Any, Literal, Optional
+16 |
+17 | from encommon.times import Time
+18 | from encommon.types import BaseModel
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   -
+19 + from pydantic import Field, field_validator
+20 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/sslca/child.py:53:9
+   |
+52 |     alias: Annotated[
+53 |         Optional[list[str]],
+   |         ^^^^^^^^^^^^^^^^^^^
+54 |         Field(None,
+55 |               description='Subject alternative names',
+   |
+help: Convert to `X | None`
+   |
+52 |     alias: Annotated[
+   -         Optional[list[str]],
+53 +         list[str] | None,
+54 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/sslca/child.py:65:9
+   |
+64 |     expire: Annotated[
+65 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+66 |         Field(None,
+67 |               description='When new certificates expire',
+   |
+help: Convert to `X | None`
+   |
+64 |     expire: Annotated[
+   -         Optional[str],
+65 +         str | None,
+66 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/sslca/child.py:72:9
+   |
+71 |     extras: Annotated[
+72 |         Optional[list[Literal['pkcs12']]],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+73 |         Field(None,
+74 |               description='Additional output certificates')]
+   |
+help: Convert to `X | None`
+   |
+71 |     extras: Annotated[
+   -         Optional[list[Literal['pkcs12']]],
+72 +         list[Literal['pkcs12']] | None,
+73 |         Field(None,
+   |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+  --> collection/plugins/action/sslca/child.py:84:22
+   |
+82 |         # NOCVR
+83 |         cls,
+84 |         value: Any,  # noqa: ANN401
+   |                      ^^^^^^^^^^^^^^
+85 |     ) -> list[str]:
+86 |         """
+   |
+help: Remove unused `noqa` directive
+   |
+83 |         cls,
+   -         value: Any,  # noqa: ANN401
+84 +         value: Any,
+85 |     ) -> list[str]:
+   |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/sslca/child.py:103:22
+    |
+101 |         # NOCVR
+102 |         cls,
+103 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+104 |     ) -> list[str]:
+105 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+102 |         cls,
+    -         value: Any,  # noqa: ANN401
+103 +         value: Any,
+104 |     ) -> list[str]:
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/sslca/child.py:122:22
+    |
+120 |         # NOCVR
+121 |         cls,
+122 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+123 |     ) -> Optional[str]:
+124 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+121 |         cls,
+    -         value: Any,  # noqa: ANN401
+122 +         value: Any,
+123 |     ) -> Optional[str]:
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/sslca/child.py:123:10
+    |
+121 |         cls,
+122 |         value: Any,  # noqa: ANN401
+123 |     ) -> Optional[str]:
+    |          ^^^^^^^^^^^^^
+124 |         """
+125 |         Perform advanced validation on the parameters provided.
+    |
+help: Convert to `X | None`
+    |
+122 |         value: Any,  # noqa: ANN401
+    -     ) -> Optional[str]:
+123 +     ) -> str | None:
+124 |         """
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/sslca/default.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Optional
+17 | |
+18 | | from encommon.types import BaseModel
+19 | |
+20 | | from pydantic import Field
+   | |__________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Optional
+15 + from typing import Annotated, Optional
+16 |
+17 | from encommon.types import BaseModel
+   -
+18 | from pydantic import Field
+   -
+19 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/sslca/default.py:48:9
+   |
+47 |     website: Annotated[
+48 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+49 |         Field(None,
+50 |               description='Default authority parameter value',
+   |
+help: Convert to `X | None`
+   |
+47 |     website: Annotated[
+   -         Optional[str],
+48 +         str | None,
+49 |         Field(None,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/sslca/params.py:15:1
+   |
+15 | / from pathlib import Path
+16 | | from typing import Annotated
+17 | | from typing import Any
+18 | | from typing import Optional
+19 | |
+20 | | from ansible.plugins.action import ActionBase  # type: ignore
+21 | |
+22 | | from encommon.types import BaseModel
+23 | | from encommon.types import DictStrAny
+24 | | from encommon.types import sort_dict
+25 | |
+26 | | from pydantic import Field
+27 | | from pydantic import field_validator
+28 | | from pydantic import model_validator
+29 | |
+30 | | from .child import ChildParams
+31 | | from .default import DefaultParams
+32 | | from .parent import ParentParams
+33 | | from .persist import PersistParams
+   | |__________________________________^
+   |
+help: Organize imports
+   |
+15 | from pathlib import Path
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Optional
+16 + from typing import Annotated, Any, Optional
+17 |
+18 | from ansible.plugins.action import ActionBase  # type: ignore
+19 + from encommon.types import BaseModel, DictStrAny, sort_dict
+20 + from pydantic import Field, field_validator, model_validator
+21 |
+   - from encommon.types import BaseModel
+   - from encommon.types import DictStrAny
+   - from encommon.types import sort_dict
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   - from pydantic import model_validator
+   -
+22 | from .child import ChildParams
+23 | from .default import DefaultParams
+24 | from .parent import ParentParams
+25 | from .persist import PersistParams
+   -
+26 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/sslca/params.py:43:9
+   |
+42 |     authority: Annotated[
+43 |         Optional[list[ParentParams]],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+44 |         Field(None,
+45 |               description='Certificate authority parameters',
+   |
+help: Convert to `X | None`
+   |
+42 |     authority: Annotated[
+   -         Optional[list[ParentParams]],
+43 +         list[ParentParams] | None,
+44 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/sslca/params.py:49:9
+   |
+48 |     certificate: Annotated[
+49 |         Optional[list[ChildParams]],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+50 |         Field(None,
+51 |               description='Signed certificate parameters',
+   |
+help: Convert to `X | None`
+   |
+48 |     certificate: Annotated[
+   -         Optional[list[ChildParams]],
+49 +         list[ChildParams] | None,
+50 |         Field(None,
+   |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/sslca/params.py:118:22
+    |
+116 |         # NOCVR
+117 |         cls,
+118 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+119 |     ) -> Optional[list[ParentParams]]:
+120 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+117 |         cls,
+    -         value: Any,  # noqa: ANN401
+118 +         value: Any,
+119 |     ) -> Optional[list[ParentParams]]:
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/sslca/params.py:119:10
+    |
+117 |         cls,
+118 |         value: Any,  # noqa: ANN401
+119 |     ) -> Optional[list[ParentParams]]:
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+120 |         """
+121 |         Perform advanced validation on the parameters provided.
+    |
+help: Convert to `X | None`
+    |
+118 |         value: Any,  # noqa: ANN401
+    -     ) -> Optional[list[ParentParams]]:
+119 +     ) -> list[ParentParams] | None:
+120 |         """
+    |
+
+PLR1704 Redefining argument with the local name `value`
+   --> collection/plugins/action/sslca/params.py:137:18
+    |
+135 |         items = value.items()
+136 |
+137 |         for key, value in items:
+    |                  ^^^^^
+138 |
+139 |             value = dict(value)
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/sslca/params.py:160:22
+    |
+158 |         # NOCVR
+159 |         cls,
+160 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+161 |     ) -> Optional[list[ChildParams]]:
+162 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+159 |         cls,
+    -         value: Any,  # noqa: ANN401
+160 +         value: Any,
+161 |     ) -> Optional[list[ChildParams]]:
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/sslca/params.py:161:10
+    |
+159 |         cls,
+160 |         value: Any,  # noqa: ANN401
+161 |     ) -> Optional[list[ChildParams]]:
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+162 |         """
+163 |         Perform advanced validation on the parameters provided.
+    |
+help: Convert to `X | None`
+    |
+160 |         value: Any,  # noqa: ANN401
+    -     ) -> Optional[list[ChildParams]]:
+161 +     ) -> list[ChildParams] | None:
+162 |         """
+    |
+
+PLR1704 Redefining argument with the local name `value`
+   --> collection/plugins/action/sslca/params.py:179:18
+    |
+177 |         items = value.items()
+178 |
+179 |         for key, value in items:
+    |                  ^^^^^
+180 |
+181 |             value = dict(value)
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/sslca/params.py:202:22
+    |
+200 |         # NOCVR
+201 |         cls,
+202 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+203 |     ) -> str:
+204 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+201 |         cls,
+    -         value: Any,  # noqa: ANN401
+202 +         value: Any,
+203 |     ) -> str:
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/sslca/params.py:318:14
+    |
+316 |         # NOCVR
+317 |         self,
+318 |         tmp: Optional[str] = None,
+    |              ^^^^^^^^^^^^^
+319 |         task_vars: Optional[DictStrAny] = None,
+320 |     ) -> DictStrAny:
+    |
+help: Convert to `X | None`
+    |
+317 |         self,
+    -         tmp: Optional[str] = None,
+318 +         tmp: str | None = None,
+319 |         task_vars: Optional[DictStrAny] = None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/sslca/params.py:319:20
+    |
+317 |         self,
+318 |         tmp: Optional[str] = None,
+319 |         task_vars: Optional[DictStrAny] = None,
+    |                    ^^^^^^^^^^^^^^^^^^^^
+320 |     ) -> DictStrAny:
+321 |         """
+    |
+help: Convert to `X | None`
+    |
+318 |         tmp: Optional[str] = None,
+    -         task_vars: Optional[DictStrAny] = None,
+319 +         task_vars: DictStrAny | None = None,
+320 |     ) -> DictStrAny:
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> collection/plugins/action/sslca/params.py:357:16
+    |
+357 |         except Exception as reason:
+    |                ^^^^^^^^^
+358 |             result |= {
+359 |                 'failed': True,
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/sslca/parent.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Any
+17 | | from typing import Optional
+18 | |
+19 | | from encommon.times import Time
+20 | | from encommon.types import BaseModel
+21 | |
+22 | | from pydantic import Field
+23 | | from pydantic import field_validator
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Optional
+15 + from typing import Annotated, Any, Optional
+16 |
+17 | from encommon.times import Time
+18 | from encommon.types import BaseModel
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   -
+19 + from pydantic import Field, field_validator
+20 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/sslca/parent.py:45:9
+   |
+44 |     parent: Annotated[
+45 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+46 |         Field(None,
+47 |               description='Determine to be an intermediate',
+   |
+help: Convert to `X | None`
+   |
+44 |     parent: Annotated[
+   -         Optional[str],
+45 +         str | None,
+46 |         Field(None,
+   |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+  --> collection/plugins/action/sslca/parent.py:65:22
+   |
+63 |         # NOCVR
+64 |         cls,
+65 |         value: Any,  # noqa: ANN401
+   |                      ^^^^^^^^^^^^^^
+66 |     ) -> str:
+67 |         """
+   |
+help: Remove unused `noqa` directive
+   |
+64 |         cls,
+   -         value: Any,  # noqa: ANN401
+65 +         value: Any,
+66 |     ) -> str:
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/sslca/persist.py:15:1
+   |
+15 | / from pathlib import Path
+16 | | from typing import Annotated
+17 | |
+18 | | from encommon.types import BaseModel
+19 | |
+20 | | from pydantic import Field
+21 | | from pydantic import model_validator
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+18 | from encommon.types import BaseModel
+   -
+   - from pydantic import Field
+   - from pydantic import model_validator
+   -
+19 + from pydantic import Field, model_validator
+20 |
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/tests/integration/__init__.py:10:1
+   |
+10 | from pathlib import Path
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: Organize imports
+   |
+11 |
+   -
+   -
+12 | SAMPLES = (
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/tests/integration/test_default.py:10:1
+   |
+10 | / from os import environ
+11 | | from pathlib import Path
+12 | | from sys import executable
+13 | |
+14 | | from _pytest.capture import CaptureFixture
+15 | |
+16 | | from encommon.utils.stdout import strip_ansi
+17 | |
+18 | | from pytest_ansible.molecule import MoleculeScenario
+19 | |
+20 | | from . import SAMPLES
+   | |_____________________^
+   |
+help: Organize imports
+   |
+14 | from _pytest.capture import CaptureFixture
+   -
+15 | from encommon.utils.stdout import strip_ansi
+   -
+16 | from pytest_ansible.molecule import MoleculeScenario
+17 |
+18 | from . import SAMPLES
+   -
+19 |
+   |
+
+RUF059 Unpacked variable `stderr` is never used
+  --> collection/tests/integration/test_default.py:44:13
+   |
+44 |     stdout, stderr = (
+   |             ^^^^^^
+45 |         capfd.readouterr())
+   |
+help: Prefix it with an underscore or any other dummy variable pattern
+
