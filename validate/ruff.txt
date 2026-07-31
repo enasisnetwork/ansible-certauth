@@ -14,7 +14,6 @@ I001 [*] Import block is un-sorted or un-formatted
 23 | | from pydantic import Field
 24 | | from pydantic import field_validator
    | |____________________________________^
-   |
 help: Organize imports
    |
 14 |
@@ -167,7 +166,6 @@ I001 [*] Import block is un-sorted or un-formatted
 19 | |
 20 | | from pydantic import Field
    | |__________________________^
-   |
 help: Organize imports
    |
 14 |
@@ -222,7 +220,6 @@ I001 [*] Import block is un-sorted or un-formatted
 32 | | from .parent import ParentParams
 33 | | from .persist import PersistParams
    | |__________________________________^
-   |
 help: Organize imports
    |
 15 | from pathlib import Path
@@ -455,7 +452,6 @@ I001 [*] Import block is un-sorted or un-formatted
 22 | | from pydantic import Field
 23 | | from pydantic import field_validator
    | |____________________________________^
-   |
 help: Organize imports
    |
 14 |
@@ -520,7 +516,6 @@ I001 [*] Import block is un-sorted or un-formatted
 20 | | from pydantic import Field
 21 | | from pydantic import model_validator
    | |____________________________________^
-   |
 help: Organize imports
    |
 18 | from encommon.types import BaseModel
@@ -537,7 +532,6 @@ I001 [*] Import block is un-sorted or un-formatted
    |
 10 | from pathlib import Path
    | ^^^^^^^^^^^^^^^^^^^^^^^^
-   |
 help: Organize imports
    |
 11 |
@@ -561,7 +555,6 @@ I001 [*] Import block is un-sorted or un-formatted
 19 | |
 20 | | from . import SAMPLES
    | |_____________________^
-   |
 help: Organize imports
    |
 14 | from _pytest.capture import CaptureFixture
