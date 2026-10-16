@@ -576,4 +576,11 @@ RUF059 Unpacked variable `stderr` is never used
 45 |         capfd.readouterr())
    |
 help: Prefix it with an underscore or any other dummy variable pattern
+   |
+43 |
+   -     stdout, stderr = (
+44 +     stdout, _stderr = (
+45 |         capfd.readouterr())
+   |
+note: This is an unsafe fix and may change runtime behavior
 
